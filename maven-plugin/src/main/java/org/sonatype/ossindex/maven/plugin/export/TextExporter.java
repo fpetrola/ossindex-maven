@@ -12,6 +12,9 @@
  */
 package org.sonatype.ossindex.maven.plugin.export;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -20,16 +23,11 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
-
 import javax.inject.Named;
 import javax.inject.Singleton;
-
-import org.sonatype.ossindex.maven.common.ComponentReportResult;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import org.sonatype.ossindex.maven.common.ComponentReportResult;
 
 /**
  * Text report {@link Exporter}.
@@ -59,7 +57,7 @@ public class TextExporter
     Path path = file.getParentFile().toPath();
     Files.createDirectories(path);
 
-    try (Writer writer = new BufferedWriter(new FileWriter(file))) {
+    try (Writer writer = Files.newBufferedWriter(file.toPath(), UTF_8)) {
       writer.write(result.explain());
     }
     catch (Exception e) {

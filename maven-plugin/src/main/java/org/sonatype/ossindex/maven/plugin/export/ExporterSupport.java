@@ -12,6 +12,9 @@
  */
 package org.sonatype.ossindex.maven.plugin.export;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -24,16 +27,12 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-
-import org.sonatype.ossindex.maven.common.ComponentReportResult;
-import org.sonatype.ossindex.maven.common.MavenCoordinates;
-import org.sonatype.ossindex.service.api.componentreport.ComponentReport;
-
 import org.apache.maven.artifact.Artifact;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import org.sonatype.ossindex.maven.common.ComponentReportResult;
+import org.sonatype.ossindex.maven.common.MavenCoordinates;
+import org.sonatype.ossindex.service.api.componentreport.ComponentReport;
 
 /**
  * Support for {@link Exporter} implementations.
@@ -66,7 +65,7 @@ public abstract class ExporterSupport
     // translate result to export format
     ComponentReportExport export = translate(result);
 
-    try (Writer writer = new BufferedWriter(new FileWriter(file))) {
+    try (Writer writer = Files.newBufferedWriter(file.toPath(), UTF_8)) {
       export(export, writer);
     }
     catch (Exception e) {
