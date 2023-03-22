@@ -73,13 +73,7 @@ public class BanVulnerableDependencies
 
   private Set<String> excludeVulnerabilityIds = new HashSet<>();
 
-  /**
-   * Report cache directory.
-   *
-   * @since 3.0.3
-   */
-  @Nullable
-  private File reportCacheDir;
+  
 
   /**
    * <a href="https://ossindex.sonatype.org/">Sonatype OSS Index</a> client configuration.

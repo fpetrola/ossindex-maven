@@ -12,20 +12,18 @@
  */
 package org.sonatype.ossindex.maven.common;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import com.google.common.base.Splitter;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.annotation.Nullable;
-
 import org.sonatype.goodies.packageurl.PackageUrl;
-
-import com.google.common.base.Splitter;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Maven coordinates.
@@ -123,7 +121,7 @@ public class MavenCoordinates
     if (this == o) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (!(o instanceof MavenCoordinates)) {
       return false;
     }
     MavenCoordinates that = (MavenCoordinates) o;
@@ -199,7 +197,7 @@ public class MavenCoordinates
    */
   public static List<MavenCoordinates> parseList(final String value) {
     checkNotNull(value);
-    List<MavenCoordinates> result = new LinkedList<>();
+    List<MavenCoordinates> result = new ArrayList<>();
     for (String coordinates : Splitter.on(',').trimResults().omitEmptyStrings().split(value)) {
       result.add(parse(coordinates));
     }
